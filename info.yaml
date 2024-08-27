@@ -3,7 +3,7 @@ info:
   title: STD23011-TD1
   version: 1.0.0
 servers:
-  - url: 'http://localhost.STD23011.com'
+  - url: 'http://localhost.std23011.com'
 paths:
   /Customers:
     get:

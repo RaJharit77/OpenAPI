@@ -1,0 +1,167 @@
+openapi: 3.1.0
+info:
+  title: Customer update
+  version: 1.0.0
+servers:
+  - url: 'https://localhost.std23011.com'
+paths:
+  /Customer:
+    get:
+      tags:
+        - User
+      summary: Get all customers
+      operationId: getAllCustomers
+      responses:
+        '200':
+          description: A list of customer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    post:
+      tags:
+        - User
+      summary: Create customers
+      operationId: CreateCustomers
+      requestBody:
+        description: A list of customer without id
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateCustomer'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreateCustomer'
+    put:
+      tags:
+        - User
+      summary: Update customers
+      operationId: UpdateCustomers
+      requestBody:
+        description: A list of customer with id
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomerId'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    delete:
+      tags:
+        - User
+      summary: Delete customers
+      operationId: DeleteCustomers
+      requestBody:
+        description: A list of id customer
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomerId'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+
+  /Customer/{customerId}:
+    put:
+      tags:
+        - Customer
+      summary: Update all Customer
+      operationId: updateAllCustomer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: The full customer data to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+          responses:
+            '200':
+              description: The updated customer
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Customer'
+    patch:
+      tags:
+        - Customer
+      summary: Partially update a customer
+      operationId: partiallyUpdateCustomer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: The partial customer data to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartialCustomer'
+        responses:
+          '200':
+            description: The partially updated customer
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Customer'
+
+components:
+  schemas:
+    Customer:
+      allOf:
+        - $ref: '#/components/schemas/CustomerId'
+        - $ref: '#/components/schemas/CreateCustomer'
+    CreateCustomer:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+    CustomerId:
+      type: object
+      properties:
+        id:
+          type: string
+    PartialCustomer:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+        required:
+          - id

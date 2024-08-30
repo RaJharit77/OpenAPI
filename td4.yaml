@@ -1,0 +1,215 @@
+openapi: 3.1.0
+info:
+  title: Meal and Order
+  version: 1.0.0
+servers:
+  - url: 'https://localhost.std23011.com'
+paths:
+  /meal:
+    get:
+      tags:
+        - Food
+      summary: Get all meals
+      operationId: getAllMeal
+      responses:
+        '200':
+          description: A list of meals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+    post:
+      tags:
+        - Food
+      summary: Create a meal
+      operationId: createMeal
+      requestBody:
+        description: The meal to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMeal'
+      responses:
+        '200':
+          description: The created meal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meal'
+    put:
+      tags:
+        - Food
+      summary: Update a meal
+      operationId: updateMeal
+      requestBody:
+        description: The meal to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MealWithId'
+      responses:
+        '200':
+          description: The updated meal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meal'
+    delete:
+      tags:
+        - Food
+      summary: Delete meals
+      operationId: deleteMeal
+      requestBody:
+        description: A list of meal IDs to delete
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MealWithId'
+      responses:
+        '200':
+          description: The list of deleted meals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MealWithId'
+
+  /customers/{customerId}/orders:
+    get:
+      tags:
+        - Order
+      summary: Get a customer's orders
+      operationId: getOrdersByCustomerId
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of the customer's orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+    post:
+      tags:
+        - Order
+      summary: Create an order for a customer
+      operationId: createOrder
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: The order to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrder'
+      responses:
+        '201':
+          description: The created order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+    put:
+      tags:
+        - Order
+      summary: Update an order for a customer
+      operationId: updateOrder
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: The updated order
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: The updated order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+components:
+  schemas:
+    Meal:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+          format: double
+
+    CreateMeal:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+          format: double
+
+    MealWithId:
+      allOf:
+        - $ref: '#/components/schemas/CreateMeal'
+        - type: object
+          properties:
+            id:
+              type: string
+
+    MealOrder:
+      type: object
+      properties:
+        meal:
+          $ref: '#/components/schemas/Meal'
+        quantity:
+          type: integer
+          minimum: 1
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        reference:
+          type: string
+        meals:
+          type: array
+          items:
+            $ref: '#/components/schemas/MealOrder'
+        orderDatetime:
+          type: string
+          format: date-time
+
+    CreateOrder:
+      type: object
+      properties:
+        reference:
+          type: string
+        meals:
+          type: array
+          items:
+            $ref: '#/components/schemas/MealOrder'

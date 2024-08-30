@@ -1,0 +1,115 @@
+openapi: 3.1.0
+info:
+  title: STD23011-TD1
+  version: 1.0.0
+servers:
+  - url: 'http://localhost.std23011.com'
+paths:
+  /customers:
+    get:
+      tags:
+        - User
+      summary: Get all customers
+      operationId: getAllCustomers
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of customer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    post:
+      tags:
+        - User
+      summary: Create customers
+      operationId: CreateCustomers
+      requestBody:
+        description: A list of customer without id
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateCustomer'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreateCustomer'
+    put:
+      tags:
+        - User
+      summary: Update customers
+      operationId: UpdateCustomers
+      requestBody:
+        description: A list of customer with id
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    delete:
+      tags:
+        - User
+      summary: Delete customers
+      operationId: DeleteCustomers
+      requestBody:
+        description: A list of id customer
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomerId'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+
+components:
+  schemas:
+    Customer:
+      allOf:
+        - $ref: '#/components/schemas/CustomerId'
+        - $ref: '#/components/schemas/CreateCustomer'
+    CreateCustomer:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+    CustomerId:
+      type: object
+      properties:
+        id:
+          type: string

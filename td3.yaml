@@ -1,0 +1,105 @@
+openapi: 3.1.0
+info:
+  title: Meal
+  version: 1.0.0
+servers:
+  - url: 'https://localhost.std23011.com'
+paths:
+  /meal:
+    get:
+      tags:
+        - Food
+      summary: Get all meal
+      operationId: getAllMeal
+      responses:
+        '200':
+          description: A list of food
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/Meal'
+    post:
+      tags:
+        - Food
+      summary: create meal
+      operationId: createMeal
+      requestBody:
+        description: A list of meal without id
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateMeal'
+      responses:
+        '200':
+          description: A list of food without id
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/Meal'
+    put:
+      tags:
+        - Food
+      summary: Update meal
+      operationId: UpdateMeal
+      requestBody:
+        description: A list of meal with id
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateMeal'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+    delete:
+      tags:
+        - Food
+      summary: Delete meal
+      operationId: DeleteMeal
+      requestBody:
+        description: A list of id Meal
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MealWithId'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+
+components:
+  schemas:
+    Meal:
+      allOf:
+        - $ref: '#/components/schemas/CreateMeal'
+        - $ref: '#/components/schemas/MealWithId'
+    CreateMeal:
+      name:
+        type: string
+      price:
+        type: number
+        format: double
+    MealWithId:
+      id:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+        format: double

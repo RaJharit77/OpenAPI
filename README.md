@@ -1,1 +1,1 @@
-﻿# OpenAPI-TD1 Repository(OAS)
+﻿# OpenAPI-TD Repository(OAS)
